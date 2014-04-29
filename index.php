@@ -17,16 +17,33 @@
     <![endif]-->
   </head>
   <body>
-    <div class="jumbotron">
+    
+  <h1>Canon électromagnétique <small>Contrôle</small></h1>
+    <div class="well">
+      Interface de contrôle
       <div class="container">
-      <h1>Projet de fin de E3</h1>
-      <p>Bonjour à tous</p>
+        <div class="row">
+          <div class="col-md-4 col-xs-4 col-md-offset-4 col-xs-offset-4"><button class="btn btn-primary btn-lg btn-block boutonHaut"><span class="glyphicon glyphicon-arrow-up"></span></button></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-xs-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-left"></span></button></div>
+          <div class="col-md-4 col-xs-4 col-md-offset-4 col-xs-offset-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-right"></button></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-xs-4 col-md-offset-4 col-xs-offset-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-down"></button></div>
+        </div>
       </div>
     </div>
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="js/jquery-1.11.0.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('.boutonHaut').click(function(event) {
+          $(this).attr('disabled', 'disabled');
+        });
+      });
+    </script>
   </body>
 </html>
