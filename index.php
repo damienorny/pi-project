@@ -92,7 +92,7 @@
               {
                 $("body").append(valeurRetour);
               });
-          }, 50);          
+          }, 100);          
         });
 
         $(document).mouseup(function()
@@ -148,29 +148,34 @@
           }
         });
 
+        var one = 0;
         $(document).keydown(function(event) 
         {
-          if (event.which == 104) 
+          if(one == 0)
           {
-             $('[name="haut"]').trigger('mousedown');
-          }
-          else if (event.which == 100) 
-          {
-            event.preventDefault();
-            $('[name="gauche"]').trigger('mousedown');
-          }
-          else if (event.which == 102) 
-          {
-            event.preventDefault();
-            $('[name="droite"]').trigger('mousedown');
-          }
-          else if (event.which == 98) 
-          {
-            event.preventDefault();
-            $('[name="bas"]').trigger('mousedown');
+            one = 1;
+            if (event.which == 104) 
+            {
+               $('[name="haut"]').trigger('mousedown');
+            }
+            else if (event.which == 100) 
+            {
+              event.preventDefault();
+              $('[name="gauche"]').trigger('mousedown');
+            }
+            else if (event.which == 102) 
+            {
+              event.preventDefault();
+              $('[name="droite"]').trigger('mousedown');
+            }
+            else if (event.which == 98) 
+            {
+              event.preventDefault();
+              $('[name="bas"]').trigger('mousedown');
+            }
           }
         });
-
+        
         $(document).keyup(function(event) 
         {
           if (event.which == 104) 
@@ -193,6 +198,7 @@
             event.preventDefault();
             $('[name="bas"]').trigger('mouseup');
           }
+          one = 0;
         });
 
         $('#confirmModal').click(function(event) 
