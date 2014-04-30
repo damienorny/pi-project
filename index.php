@@ -32,6 +32,12 @@
         <div class="row">
           <div class="col-md-4 col-xs-4 col-md-offset-4 col-xs-offset-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-down"></button></div>
         </div>
+        <div>
+          <br/><button class="btn btn-warning btn-lg btn-block boutonFire"><span class="glyphicon glyphicon-fire"> Fire</button>
+        </div>
+        <div style = "display: none" class = "divBoutonFire2">
+          <br/><button class="btn btn-danger btn-lg btn-block boutonFire2"><span class="glyphicon glyphicon-fire"> Fire</button>
+        </div>
       </div>
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -42,6 +48,19 @@
       $(document).ready(function() {
         $('.boutonHaut').click(function(event) {
           $(this).attr('disabled', 'disabled');
+        });
+        $('.boutonFire').click(function(event) {
+          if(!$('.boutonFire2').is(":visible"))
+          {
+            var MdP = prompt("Entrer le mot de passe pour pouvoir tirer :");
+            if(MdP != "azerty")
+            {
+              alert("Mot de passe incorrect.")
+              return;
+            }
+            alert("Attention la mise à feu est désormais disponible.");
+          }
+            $('.divBoutonFire2').toggle();
         });
       });
     </script>
