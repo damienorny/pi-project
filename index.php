@@ -15,9 +15,30 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+      .decompte
+      {
+        height: 100%;
+        width: 100%;
+        z-index: 999;
+        position: fixed;
+        font-size: 210px;
+        text-align: center;
+        color: red;
+        padding-top: 10%;
+        background-color: rgba(255, 255, 255, 0.83);
+        display: none;
+      }
+    </style>
   </head>
-
   <body>
+  <div class="decompte">
+    <div class="decompteNumerique"></div>
+    <div class="progress progress-striped active">
+      <div class="progress-bar progress-bar-danger"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="progressBarFire">
+      </div>
+    </div>
+  </div>
   <!-- navbar -->
     <nav class="navbar navbar-default navbar-fixed-top alert navbarNotif" role="navigation" style="display:none">
       <div class="container">
@@ -66,10 +87,13 @@
         </div>
       </div>
     </div>
+    <!--
+    <embed src="bip.wav" autostart="false" width="0" height="0" id="sound1" enablejavascript="true">-->
     <!-- Fin modal bootstrap pour mot de passe -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/jquery-ui-1.10.4.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
@@ -95,6 +119,7 @@
           }, 100);          
         });
 
+
         $(document).mouseup(function()
         {
             clearInterval(timeout);
@@ -107,11 +132,11 @@
 
         $('.boutonFire').click(function(event) 
         {
-            /** Décommenter pour activer la voix **
+            /*Décommenter pour activer la voix **/
             var voix = new SpeechSynthesisUtterance();
             voix.lang = 'fr-FR';
             voix.text = "Veuillez rentrer votre mot de passe";
-            speechSynthesis.speak(voix);*/
+            speechSynthesis.speak(voix);
 
             if ($('.divBoutonFire2').is(":visible")) 
             {
@@ -123,9 +148,27 @@
             }         
         });
 
+        function counter($el, n) {
+            (function loop() {
+                $el.html(n);
+                var pourcent = 20*n;
+                var pourcent2 = pourcent + "%";
+                $('#progressBarFire').css('width', pourcent2);
+                if (n--) {
+                  setTimeout(loop, 1000);
+                }
+            })();
+        }
+
         $('.boutonFire2').click(function(event) 
         {
-            alert("tamere");    
+            var voix = new SpeechSynthesisUtterance();
+            voix.lang = 'fr-FR';
+            voix.text = "Mise à feu enclenchée.";
+            speechSynthesis.speak(voix);
+            $('.decompte').fadeIn('slow');
+            counter($('.decompteNumerique'), 5);
+
         });
 
         $(document).keypress(function(event) 
@@ -175,7 +218,7 @@
             }
           }
         });
-        
+
         $(document).keyup(function(event) 
         {
           if (event.which == 104) 
