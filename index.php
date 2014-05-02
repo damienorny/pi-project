@@ -151,11 +151,19 @@
         function counter($el, n) {
             (function loop() {
                 $el.html(n);
-                var pourcent = 20*n;
+                if (n--) {
+                  setTimeout(loop, 1000);
+                }
+            })();
+        }
+
+        function counterP($el, n) {
+            (function loop() {
+                var pourcent = 5*n;
                 var pourcent2 = pourcent + "%";
                 $('#progressBarFire').css('width', pourcent2);
                 if (n--) {
-                  setTimeout(loop, 1000);
+                  setTimeout(loop, 250);
                 }
             })();
         }
@@ -168,6 +176,7 @@
             speechSynthesis.speak(voix);
             $('.decompte').fadeIn('slow');
             counter($('.decompteNumerique'), 5);
+            counterP($('.decompteNumerique'), 20);
 
         });
 
