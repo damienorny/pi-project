@@ -153,13 +153,21 @@
         {
             (function loop() 
             {
-                $el.html(Math.ceil(n/4));
-                var pourcent = 5*n;
-                var pourcent2 = pourcent + "%";
-                $('#progressBarFire').css('width', pourcent2);
-                if (n--) {
-                  setTimeout(loop, 250);
+              $(document).keypress(function(event) 
+              {
+                if (event.which)
+                {
+                 location.reload();
                 }
+              });
+              $el.html(Math.ceil(n/4));
+              var pourcent = 5*n;
+              var pourcent2 = pourcent + "%";
+              $('#progressBarFire').css('width', pourcent2);
+              if (n--) 
+              {
+                setTimeout(loop, 250);
+              }
             })();
         }
 
@@ -171,7 +179,6 @@
             speechSynthesis.speak(voix);
             $('.decompte').fadeIn('slow');
             counter($('.decompteNumerique'), 20);
-
         });
 
         $(document).keypress(function(event) 
