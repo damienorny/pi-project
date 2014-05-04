@@ -126,7 +126,8 @@
             return false;
         });
           
-        $('#modalPassword').on('shown.bs.modal', function (e) {
+        $('#modalPassword').on('shown.bs.modal', function (e) 
+        {
           $('#MdP').focus();
         })
 
@@ -148,17 +149,11 @@
             }         
         });
 
-        function counter($el, n) {
-            (function loop() {
-                $el.html(n);
-                if (n--) {
-                  setTimeout(loop, 1000);
-                }
-            })();
-        }
-
-        function counterP($el, n) {
-            (function loop() {
+        function counter($el, n) 
+        {
+            (function loop() 
+            {
+                $el.html(Math.ceil(n/4));
                 var pourcent = 5*n;
                 var pourcent2 = pourcent + "%";
                 $('#progressBarFire').css('width', pourcent2);
@@ -175,8 +170,7 @@
             voix.text = "Mise à feu enclenchée.";
             speechSynthesis.speak(voix);
             $('.decompte').fadeIn('slow');
-            counter($('.decompteNumerique'), 5);
-            counterP($('.decompteNumerique'), 20);
+            counter($('.decompteNumerique'), 20);
 
         });
 
