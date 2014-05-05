@@ -99,8 +99,6 @@
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
-    var one = 0;
-
       $(document).ready(function() 
       {
         rebindEvents();
@@ -155,10 +153,10 @@
 
         $('#NewFire').click(function(event) 
         {
-            Protection = 0;
             $('.divBoutonFire2').hide();
             $('.decompte').fadeOut('slow');
             $('#NewFire').hide();
+            rebindEvents();
         });
 
         function counter($el, n) 
@@ -182,7 +180,6 @@
               else
               {
                 $('#NewFire').show();
-                rebindEvents();
               }
             })();
             
@@ -204,6 +201,8 @@
             counter($('.decompteNumerique'), 20);
         });
 
+        var one = 0;
+
         function rebindEvents()
         {
           $(document).keypress(function(event) 
@@ -211,11 +210,7 @@
               if (event.which == 13) 
               {
                 event.preventDefault();
-                // if (Protection == 1) 
-                // {
-                //   $('#NewFire').trigger('click');
-                // }
-                /*else */if($('#MdP').val() != "")
+                if($('#MdP').val() != "")
                 {
                   $('#confirmModal').trigger('click');
                 }
@@ -232,54 +227,53 @@
 
           $(document).keydown(function(event) 
           {
-            if(one == 0)
+            if (one == 0) 
             {
-              one = 1;
               if (event.which == 104) 
               {
                  $('[name="haut"]').trigger('mousedown');
+                 one = 1;
               }
               else if (event.which == 100) 
               {
-                event.preventDefault();
                 $('[name="gauche"]').trigger('mousedown');
+                one = 2;
               }
               else if (event.which == 102) 
               {
-                event.preventDefault();
                 $('[name="droite"]').trigger('mousedown');
+                one = 3;
               }
               else if (event.which == 98) 
               {
-                event.preventDefault();
                 $('[name="bas"]').trigger('mousedown');
+                one = 4;
               }
             }
           });
 
           $(document).keyup(function(event) 
           {
-            if (event.which == 104) 
+            if (event.which == 104 && one == 1) 
             {
-              event.preventDefault();
                $('[name="haut"]').trigger('mouseup');
+               one = 0;
             }
-            else if (event.which == 100) 
+            else if (event.which == 100 && one == 2) 
             {
-              event.preventDefault();
               $('[name="gauche"]').trigger('mouseup');
+              one = 0;
             }
-            else if (event.which == 102) 
+            else if (event.which == 102 && one == 3) 
             {
-              event.preventDefault();
               $('[name="droite"]').trigger('mouseup');
+              one = 0;
             }
-            else if (event.which == 98) 
+            else if (event.which == 98 && one == 4) 
             {
-              event.preventDefault();
               $('[name="bas"]').trigger('mouseup');
+              one = 0;
             }
-            one = 0;
           });
         }
         
