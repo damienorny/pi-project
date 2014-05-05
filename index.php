@@ -108,16 +108,16 @@
           var direction = $(this).attr('name');
           timeout = setInterval(function()
           {
-              $.ajax(
-              {
-                url: 'traitement.php',
-                type: 'POST',
-                data: {bouton: direction},
-              })
-              .done(function(valeurRetour) 
-              {
-                $("body").append(valeurRetour);
-              });
+            $.ajax(
+            {
+              url: 'traitement.php',
+              type: 'POST',
+              data: {bouton: direction},
+            })
+            .done(function(valeurRetour) 
+            {
+              $("body").append(valeurRetour);
+            });
           }, 100);          
         });
 
@@ -134,71 +134,70 @@
 
         $('.boutonFire').click(function(event) 
         {
-            /*Décommenter pour activer la voix **/
-            var voix = new SpeechSynthesisUtterance();
-            voix.lang = 'fr-FR';
-            voix.text = "Veuillez rentrer votre mot de passe";
-            speechSynthesis.speak(voix);
+          /*Décommenter pour activer la voix **/
+          var voix = new SpeechSynthesisUtterance();
+          voix.lang = 'fr-FR';
+          voix.text = "Veuillez rentrer votre mot de passe";
+          speechSynthesis.speak(voix);
 
-            if ($('.divBoutonFire2').is(":visible")) 
-            {
-              $('.divBoutonFire2').hide();
-            }
-            else
-            {
-              $('#modalPassword').modal();
-              $(document).unbind('keydown');
-            }         
+          if ($('.divBoutonFire2').is(":visible")) 
+          {
+            $('.divBoutonFire2').hide();
+          }
+          else
+          {
+            $('#modalPassword').modal();
+            $(document).unbind('keydown');
+          }         
         });
 
         $('#NewFire').click(function(event) 
         {
-            $('.divBoutonFire2').hide();
-            $('.decompte').fadeOut('slow');
-            $('#NewFire').hide();
-            rebindEvents();
+          $('.divBoutonFire2').hide();
+          $('.decompte').fadeOut('slow');
+          $('#NewFire').hide();
+          rebindEvents();
         });
 
         function counter($el, n) 
         {
-            (function loop() 
+          (function loop() 
+          {
+            $(document).unbind('keypress');
+            $(document).unbind('keydown');
+            $(document).unbind('keyup');
+            $(document).one('keypress', function(event) {
+              $('#NewFire').trigger('click');
+              return;
+            });
+            $el.html(Math.ceil(n/4));
+            var pourcent = 5*n;
+            var pourcent2 = pourcent + "%";
+            $('#progressBarFire').css('width', pourcent2);
+            if (n--) 
             {
-              $(document).unbind('keypress');
-              $(document).unbind('keydown');
-              $(document).unbind('keyup');
-              $(document).one('keypress', function(event) {
-                $('#NewFire').trigger('click');
-              });
-              $el.html(Math.ceil(n/4));
-              var pourcent = 5*n;
-              var pourcent2 = pourcent + "%";
-              $('#progressBarFire').css('width', pourcent2);
-              if (n--) 
-              {
-                setTimeout(loop, 250);
-              }
-              else
-              {
-                $('#NewFire').show();
-              }
-            })();
-            
+              setTimeout(loop, 250);
+            }
+            else
+            {
+              $('#NewFire').show();
+            }
+          })();       
         }
 
         $('.decompte').click(function(event) {
           $('#NewFire').trigger('click');
-          rebindEvents();
         });
 
         $('.boutonFire2').click(function(event) 
         {
-            $('#progressBarFire').css('width', "100%");
-            var voix = new SpeechSynthesisUtterance();
-            voix.lang = 'fr-FR';
-            voix.text = "Mise à feu enclenchée.";
-            speechSynthesis.speak(voix);
-            $('.decompte').fadeIn('slow');
-            counter($('.decompteNumerique'), 20);
+          $('#progressBarFire').css('width', "100%");
+          var voix = new SpeechSynthesisUtterance();
+          voix.lang = 'fr-FR';
+          voix.text = "Mise à feu enclenchée.";
+          speechSynthesis.speak(voix);
+          $('.decompte').fadeIn('slow');
+          counter($('.decompteNumerique'), 20);
         });
 
         var one = 0;
@@ -207,22 +206,22 @@
         {
           $(document).keypress(function(event) 
           {
-              if (event.which == 13) 
+            if (event.which == 13) 
+            {
+              event.preventDefault();
+              if($('#MdP').val() != "")
               {
-                event.preventDefault();
-                if($('#MdP').val() != "")
-                {
-                  $('#confirmModal').trigger('click');
-                }
-                else if($('.boutonFire2').is(':visible'))
-                {
-                  $('.boutonFire2').trigger('click');
-                }
+                $('#confirmModal').trigger('click');
               }
-              else if (event.which == 53) 
+              else if($('.boutonFire2').is(':visible'))
               {
-                $('.boutonFire').trigger('click');
+                $('.boutonFire2').trigger('click');
               }
+            }
+            else if (event.which == 53) 
+            {
+              $('.boutonFire').trigger('click');
+            }
           });
 
           $(document).keydown(function(event) 
@@ -256,8 +255,8 @@
           {
             if (event.which == 104 && one == 1) 
             {
-               $('[name="haut"]').trigger('mouseup');
-               one = 0;
+              $('[name="haut"]').trigger('mouseup');
+              one = 0;
             }
             else if (event.which == 100 && one == 2) 
             {
@@ -275,35 +274,34 @@
               one = 0;
             }
           });
-        }
-        
+        }   
 
         $('#confirmModal').click(function(event) 
         {
-            $('#modalPassword').modal('hide');
-            var MdP = $('#MdP').val();
-            $('#MdP').val("");
-            if(MdP != "azerty")
+          $('#modalPassword').modal('hide');
+          var MdP = $('#MdP').val();
+          $('#MdP').val("");
+          if(MdP != "azerty")
+          {
+            $(".texteNotif").text("Mot de passe incorrect");
+            $(".navbarNotif").addClass('alert-danger');
+            $(".navbarNotif").show("slow");
+            setTimeout(function() 
             {
-              $(".texteNotif").text("Mot de passe incorrect");
-              $(".navbarNotif").addClass('alert-danger');
-              $(".navbarNotif").show("slow");
-              setTimeout(function() 
-              {
-                $(".navbarNotif").hide("slow");
-                $(".navbarNotif").removeClass('alert-danger');
-              }, 3000);
-              return;
-            }
-              $(".texteNotif").text("La mise à feu est désormais disponible");
-              $(".navbarNotif").addClass('alert-success');
-              $(".navbarNotif").show("slow");
-              setTimeout(function() 
-              {
-                $(".navbarNotif").hide("slow");
-                $(".navbarNotif").removeClass('alert-success');
-              }, 3000);
-              $('.divBoutonFire2').show();
+              $(".navbarNotif").hide("slow");
+              $(".navbarNotif").removeClass('alert-danger');
+            }, 3000);
+            return;
+          }
+          $(".texteNotif").text("La mise à feu est désormais disponible");
+          $(".navbarNotif").addClass('alert-success');
+          $(".navbarNotif").show("slow");
+          setTimeout(function() 
+          {
+            $(".navbarNotif").hide("slow");
+            $(".navbarNotif").removeClass('alert-success');
+          }, 3000);
+          $('.divBoutonFire2').show();
         });
       });
     </script>
