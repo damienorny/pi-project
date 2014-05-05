@@ -38,6 +38,7 @@
       <div class="progress-bar progress-bar-danger"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="progressBarFire">
       </div>
     </div>
+    <div class="col-md-4 col-xs-4 col-md-offset-4 col-xs-offset-4"><button name="haut" id="NewFire" style="display:none" class="buttonDirection btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-refresh"> Relancer</span></button></div>
   </div>
   <!-- navbar -->
     <nav class="navbar navbar-default navbar-fixed-top alert navbarNotif" role="navigation" style="display:none">
@@ -98,6 +99,8 @@
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
+    var Protection = 0;
+
       $(document).ready(function() 
       {
         var timeout, clicker = $('.buttonDirection');
@@ -118,7 +121,6 @@
               });
           }, 100);          
         });
-
 
         $(document).mouseup(function()
         {
@@ -149,16 +151,21 @@
             }         
         });
 
+        $('#NewFire').click(function(event) 
+        {
+            Protection = 0;
+            $('.divBoutonFire2').hide();
+            $('.decompte').fadeOut('slow');
+            $('#NewFire').hide();
+        });
+
         function counter($el, n) 
         {
             (function loop() 
             {
               $(document).keypress(function(event) 
               {
-                if (event.which)
-                {
-                 location.reload();
-                }
+                  $('#NewFire').trigger('click');
               });
               $el.html(Math.ceil(n/4));
               var pourcent = 5*n;
@@ -168,11 +175,16 @@
               {
                 setTimeout(loop, 250);
               }
+              else
+              {
+                $('#NewFire').show();
+              }
             })();
         }
 
         $('.boutonFire2').click(function(event) 
         {
+            Protection = 1;
             var voix = new SpeechSynthesisUtterance();
             voix.lang = 'fr-FR';
             voix.text = "Mise à feu enclenchée.";
@@ -183,22 +195,26 @@
 
         $(document).keypress(function(event) 
         {
-          if (event.which == 13) 
-          {
-            event.preventDefault();
-            if($('#MdP').val() != "")
+            if (event.which == 13) 
             {
-              $('#confirmModal').trigger('click');
+              event.preventDefault();
+              if (Protection == 1) 
+              {
+                $('#NewFire').trigger('click');
+              }
+              else if($('#MdP').val() != "" && Protection == 0)
+              {
+                $('#confirmModal').trigger('click');
+              }
+              else if($('.boutonFire2').is(':visible') && Protection == 0)
+              {
+                $('.boutonFire2').trigger('click');
+              }
             }
-            else if($('.boutonFire2').is(':visible'))
+            else if (event.which == 53 && Protection == 0) 
             {
-              $('.boutonFire2').trigger('click');
+              $('.boutonFire').trigger('click');
             }
-          }
-          else if (event.which == 53) 
-          {
-            $('.boutonFire').trigger('click');
-          }
         });
 
         var one = 0;
@@ -207,24 +223,27 @@
           if(one == 0)
           {
             one = 1;
-            if (event.which == 104) 
+            if (Protection == 0)
             {
-               $('[name="haut"]').trigger('mousedown');
-            }
-            else if (event.which == 100) 
-            {
-              event.preventDefault();
-              $('[name="gauche"]').trigger('mousedown');
-            }
-            else if (event.which == 102) 
-            {
-              event.preventDefault();
-              $('[name="droite"]').trigger('mousedown');
-            }
-            else if (event.which == 98) 
-            {
-              event.preventDefault();
-              $('[name="bas"]').trigger('mousedown');
+              if (event.which == 104) 
+              {
+                 $('[name="haut"]').trigger('mousedown');
+              }
+              else if (event.which == 100) 
+              {
+                event.preventDefault();
+                $('[name="gauche"]').trigger('mousedown');
+              }
+              else if (event.which == 102) 
+              {
+                event.preventDefault();
+                $('[name="droite"]').trigger('mousedown');
+              }
+              else if (event.which == 98) 
+              {
+                event.preventDefault();
+                $('[name="bas"]').trigger('mousedown');
+              }
             }
           }
         });
@@ -279,7 +298,7 @@
                 $(".navbarNotif").hide("slow");
                 $(".navbarNotif").removeClass('alert-success');
               }, 3000);
-              $('.divBoutonFire2').toggle();
+              $('.divBoutonFire2').show();
         });
       });
     </script>
