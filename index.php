@@ -99,10 +99,11 @@
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
-    var Protection = 0;
+    var one = 0;
 
       $(document).ready(function() 
       {
+        rebindEvents();
         var timeout, clicker = $('.buttonDirection');
         clicker.mousedown(function(event) 
         {
@@ -148,6 +149,7 @@
             else
             {
               $('#modalPassword').modal();
+              $(document).unbind('keydown');
             }         
         });
 
@@ -163,9 +165,11 @@
         {
             (function loop() 
             {
-              $(document).keypress(function(event) 
-              {
-                  $('#NewFire').trigger('click');
+              $(document).unbind('keypress');
+              $(document).unbind('keydown');
+              $(document).unbind('keyup');
+              $(document).one('keypress', function(event) {
+                $('#NewFire').trigger('click');
               });
               $el.html(Math.ceil(n/4));
               var pourcent = 5*n;
@@ -178,13 +182,20 @@
               else
               {
                 $('#NewFire').show();
+                rebindEvents();
               }
             })();
+            
         }
+
+        $('.decompte').click(function(event) {
+          $('#NewFire').trigger('click');
+          rebindEvents();
+        });
 
         $('.boutonFire2').click(function(event) 
         {
-            Protection = 1;
+            $('#progressBarFire').css('width', "100%");
             var voix = new SpeechSynthesisUtterance();
             voix.lang = 'fr-FR';
             voix.text = "Mise à feu enclenchée.";
@@ -193,38 +204,37 @@
             counter($('.decompteNumerique'), 20);
         });
 
-        $(document).keypress(function(event) 
+        function rebindEvents()
         {
-            if (event.which == 13) 
-            {
-              event.preventDefault();
-              if (Protection == 1) 
-              {
-                $('#NewFire').trigger('click');
-              }
-              else if($('#MdP').val() != "" && Protection == 0)
-              {
-                $('#confirmModal').trigger('click');
-              }
-              else if($('.boutonFire2').is(':visible') && Protection == 0)
-              {
-                $('.boutonFire2').trigger('click');
-              }
-            }
-            else if (event.which == 53 && Protection == 0) 
-            {
-              $('.boutonFire').trigger('click');
-            }
-        });
-
-        var one = 0;
-        $(document).keydown(function(event) 
-        {
-          if(one == 0)
+          $(document).keypress(function(event) 
           {
-            one = 1;
-            if (Protection == 0)
+              if (event.which == 13) 
+              {
+                event.preventDefault();
+                // if (Protection == 1) 
+                // {
+                //   $('#NewFire').trigger('click');
+                // }
+                /*else */if($('#MdP').val() != "")
+                {
+                  $('#confirmModal').trigger('click');
+                }
+                else if($('.boutonFire2').is(':visible'))
+                {
+                  $('.boutonFire2').trigger('click');
+                }
+              }
+              else if (event.which == 53) 
+              {
+                $('.boutonFire').trigger('click');
+              }
+          });
+
+          $(document).keydown(function(event) 
+          {
+            if(one == 0)
             {
+              one = 1;
               if (event.which == 104) 
               {
                  $('[name="haut"]').trigger('mousedown');
@@ -245,33 +255,34 @@
                 $('[name="bas"]').trigger('mousedown');
               }
             }
-          }
-        });
+          });
 
-        $(document).keyup(function(event) 
-        {
-          if (event.which == 104) 
+          $(document).keyup(function(event) 
           {
-            event.preventDefault();
-             $('[name="haut"]').trigger('mouseup');
-          }
-          else if (event.which == 100) 
-          {
-            event.preventDefault();
-            $('[name="gauche"]').trigger('mouseup');
-          }
-          else if (event.which == 102) 
-          {
-            event.preventDefault();
-            $('[name="droite"]').trigger('mouseup');
-          }
-          else if (event.which == 98) 
-          {
-            event.preventDefault();
-            $('[name="bas"]').trigger('mouseup');
-          }
-          one = 0;
-        });
+            if (event.which == 104) 
+            {
+              event.preventDefault();
+               $('[name="haut"]').trigger('mouseup');
+            }
+            else if (event.which == 100) 
+            {
+              event.preventDefault();
+              $('[name="gauche"]').trigger('mouseup');
+            }
+            else if (event.which == 102) 
+            {
+              event.preventDefault();
+              $('[name="droite"]').trigger('mouseup');
+            }
+            else if (event.which == 98) 
+            {
+              event.preventDefault();
+              $('[name="bas"]').trigger('mouseup');
+            }
+            one = 0;
+          });
+        }
+        
 
         $('#confirmModal').click(function(event) 
         {
