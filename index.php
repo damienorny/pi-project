@@ -125,7 +125,7 @@
 
         $('.boutonFire2').click(function(event) 
         {
-            alert("tamere");    
+            alert("boutonFire2");    
         });
 
         $(document).keypress(function(event) 
