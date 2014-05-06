@@ -15,9 +15,31 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+      .decompte
+      {
+        height: 100%;
+        width: 100%;
+        z-index: 999;
+        position: fixed;
+        font-size: 210px;
+        text-align: center;
+        color: red;
+        padding-top: 10%;
+        background-color: rgba(255, 255, 255, 0.83);
+        display: none;
+      }
+    </style>
   </head>
-
   <body>
+  <div class="decompte">
+    <div class="decompteNumerique"></div>
+    <div class="progress progress-striped active">
+      <div class="progress-bar progress-bar-danger"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="progressBarFire">
+      </div>
+    </div>
+    <div class="col-md-4 col-xs-4 col-md-offset-4 col-xs-offset-4"><button name="Relancer" id="NewFire" style="display:none" class="buttonInd btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-refresh"> Relancer</span></button></div>
+  </div>
   <!-- navbar -->
     <nav class="navbar navbar-default navbar-fixed-top alert navbarNotif" role="navigation" style="display:none">
       <div class="container">
@@ -93,12 +115,6 @@
                 $("body").append(valeurRetour);
               });
           }, 100);          
-        });
-
-        $(document).mouseup(function()
-        {
-            clearInterval(timeout);
-            return false;
         });
           
         $('#modalPassword').on('shown.bs.modal', function (e) {
