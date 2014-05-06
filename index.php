@@ -120,12 +120,6 @@
             });
           }, 100);          
         });
-
-        $(document).mouseup(function()
-        {
-            clearInterval(timeout);
-            return false;
-        });
           
         $('#modalPassword').on('shown.bs.modal', function (e) 
         {
@@ -153,10 +147,7 @@
 
         $('#NewFire').click(function(event) 
         {
-          $('.divBoutonFire2').hide();
-          $('.decompte').fadeOut('slow');
-          $('#NewFire').hide();
-          rebindEvents();
+          location.reload();
         });
 
         function counter($el, n) 
@@ -181,6 +172,7 @@
             else
             {
               $('#NewFire').show();
+              return;
             }
           })();       
         }
