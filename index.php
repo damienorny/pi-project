@@ -31,6 +31,7 @@
       }
     </style>
   </head>
+
   <body>
   <div class="decompte">
     <div class="decompteNumerique"></div>
@@ -115,6 +116,12 @@
                 $("body").append(valeurRetour);
               });
           }, 100);          
+        });
+
+        $(document).mouseup(function()
+        {
+            clearInterval(timeout);
+            return false;
         });
           
         $('#modalPassword').on('shown.bs.modal', function (e) {
