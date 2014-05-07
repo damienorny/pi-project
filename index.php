@@ -96,8 +96,13 @@
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
+      var one = 0;
+
       $(document).ready(function() 
       {
+        rebindEventsKeyPress();
+        rebindEventsKeyDown();
+        rebindEventsKeyUp();
         var timeout, clicker = $('.buttonDirection');
         clicker.mousedown(function(event) 
         {
@@ -123,14 +128,14 @@
             return false;
         });
           
-        $('#modalPassword').on('shown.bs.modal', function (e) {
+        $('#modalPassword').on('shown.bs.modal', function (e) 
+        {
           $('#MdP').focus();
         })
 
         $('.boutonFire').click(function(event) 
         {
-            /** Décommenter pour activer la voix **
-            var voix = new SpeechSynthesisUtterance();
+            /**var voix = new SpeechSynthesisUtterance();
             voix.lang = 'fr-FR';
             voix.text = "Veuillez rentrer votre mot de passe";
             speechSynthesis.speak(voix);*/
@@ -138,17 +143,19 @@
             if ($('.divBoutonFire2').is(":visible")) 
             {
               $('.divBoutonFire2').hide();
+              rebindEventsKeyDown();
             }
             else
             {
               $('#modalPassword').modal();
+              $(document).unbind('keydown');
             }         
         });
 
         $('.boutonFire2').click(function(event) 
         {
-          $('.divBoutonFire2').hide();
-          $('#progressBarFire').css('width', "100%");
+          $(document).unbind('keypress');
+          $(document).unbind('keyup');
           /**var voix = new SpeechSynthesisUtterance();
           voix.lang = 'fr-FR';
           voix.text = "Mise à feu enclenchée.";
@@ -159,15 +166,15 @@
 
         $('#NewFire').click(function(event) 
         {
-          $('.decompte').fadeOut('slow');
-          $('#NewFire').hide();
+          location.reload();
         });
 
         function counter($el, n) 
         {
           (function loop() 
           {
-            $(document).one('keypress', function(event) {
+            $(document).one('keypress', function(event) 
+            {
               $('#NewFire').trigger('click');
               return;
             });
@@ -187,105 +194,113 @@
           })();       
         }
 
-        $(document).keypress(function(event) 
+        function rebindEventsKeyPress()
         {
-          if (event.which == 13) 
+          $(document).keypress(function(event) 
           {
-            event.preventDefault();
-            if($('#MdP').val() != "")
+            if (event.which == 13) 
             {
-              $('#confirmModal').trigger('click');
+              event.preventDefault();
+              if($('#MdP').val() != "")
+              {
+                $('#confirmModal').trigger('click');
+              }
+              else if($('.boutonFire2').is(':visible'))
+              {
+                $('.boutonFire2').trigger('click');
+              }
             }
-            else if($('.boutonFire2').is(':visible'))
+            else if (event.which == 53) 
             {
-              $('.boutonFire2').trigger('click');
+              $('.boutonFire').trigger('click');
             }
-          }
-          else if (event.which == 53) 
-          {
-            $('.boutonFire').trigger('click');
-          }
-        });
+          });
+        }
 
-        var one = 0;
-        $(document).keydown(function(event) 
+        function rebindEventsKeyDown()
         {
-          if(one == 0)
+          $(document).keydown(function(event) 
           {
-            one = 1;
-            if (event.which == 104) 
+            if (one == 0) 
             {
-               $('[name="haut"]').trigger('mousedown');
+              if (event.which == 104) 
+              {
+                 $('[name="haut"]').trigger('mousedown');
+                 one = 1;
+              }
+              else if (event.which == 100) 
+              {
+                $('[name="gauche"]').trigger('mousedown');
+                one = 2;
+              }
+              else if (event.which == 102) 
+              {
+                $('[name="droite"]').trigger('mousedown');
+                one = 3;
+              }
+              else if (event.which == 98) 
+              {
+                $('[name="bas"]').trigger('mousedown');
+                one = 4;
+              }
             }
-            else if (event.which == 100) 
-            {
-              event.preventDefault();
-              $('[name="gauche"]').trigger('mousedown');
-            }
-            else if (event.which == 102) 
-            {
-              event.preventDefault();
-              $('[name="droite"]').trigger('mousedown');
-            }
-            else if (event.which == 98) 
-            {
-              event.preventDefault();
-              $('[name="bas"]').trigger('mousedown');
-            }
-          }
-        });
-        
-        $(document).keyup(function(event) 
+          });
+        }
+
+        function rebindEventsKeyUp()
         {
-          if (event.which == 104) 
+          $(document).keyup(function(event) 
           {
-            event.preventDefault();
-             $('[name="haut"]').trigger('mouseup');
-          }
-          else if (event.which == 100) 
-          {
-            event.preventDefault();
-            $('[name="gauche"]').trigger('mouseup');
-          }
-          else if (event.which == 102) 
-          {
-            event.preventDefault();
-            $('[name="droite"]').trigger('mouseup');
-          }
-          else if (event.which == 98) 
-          {
-            event.preventDefault();
-            $('[name="bas"]').trigger('mouseup');
-          }
-          one = 0;
-        });
+            if (event.which == 104 && one == 1) 
+            {
+              $('[name="haut"]').trigger('mouseup');
+              one = 0;
+            }
+            else if (event.which == 100 && one == 2) 
+            {
+              $('[name="gauche"]').trigger('mouseup');
+              one = 0;
+            }
+            else if (event.which == 102 && one == 3) 
+            {
+              $('[name="droite"]').trigger('mouseup');
+              one = 0;
+            }
+            else if (event.which == 98 && one == 4) 
+            {
+              $('[name="bas"]').trigger('mouseup');
+              one = 0;
+            }
+          });
+        }
 
         $('#confirmModal').click(function(event) 
         {
-            $('#modalPassword').modal('hide');
-            var MdP = $('#MdP').val();
-            $('#MdP').val("");
-            if(MdP != "azerty")
+          $('#modalPassword').modal('hide');
+          var MdP = $('#MdP').val();
+          $('#MdP').val("");
+          if(MdP != "azerty")
+          {
+            $(".texteNotif").text("Mot de passe incorrect");
+            $(".navbarNotif").addClass('alert-danger');
+            $(".navbarNotif").show("slow");
+            setTimeout(function() 
             {
-              $(".texteNotif").text("Mot de passe incorrect");
-              $(".navbarNotif").addClass('alert-danger');
-              $(".navbarNotif").show("slow");
-              setTimeout(function() 
-              {
-                $(".navbarNotif").hide("slow");
-                $(".navbarNotif").removeClass('alert-danger');
-              }, 3000);
-              return;
-            }
-              $(".texteNotif").text("La mise à feu est désormais disponible");
-              $(".navbarNotif").addClass('alert-success');
-              $(".navbarNotif").show("slow");
-              setTimeout(function() 
-              {
-                $(".navbarNotif").hide("slow");
-                $(".navbarNotif").removeClass('alert-success');
-              }, 3000);
-              $('.divBoutonFire2').toggle();
+              $(".navbarNotif").hide("slow");
+              $(".navbarNotif").removeClass('alert-danger');
+            }, 3000);
+            rebindEventsKeyDown();
+            return;
+          }
+          $(".texteNotif").text("La mise à feu est désormais disponible");
+          $(".navbarNotif").addClass('alert-success');
+          $(".navbarNotif").show("slow");
+          setTimeout(function() 
+          {
+            $(".navbarNotif").hide("slow");
+            $(".navbarNotif").removeClass('alert-success');
+          }, 3000);
+          $('.divBoutonFire2').toggle();
         });
       });
     </script>
