@@ -122,6 +122,10 @@
           }, 100);          
         });
 
+        $('.decompte').click(function(event) {
+          location.reload();
+        });
+
         $(document).mouseup(function()
         {
             clearInterval(timeout);
