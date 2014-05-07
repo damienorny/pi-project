@@ -97,6 +97,7 @@
     <script type="text/javascript">
 
       var one = 0;
+      var audio;
 
       $(document).ready(function() 
       {
@@ -109,16 +110,16 @@
           var direction = $(this).attr('name');
           timeout = setInterval(function()
           {
-              $.ajax(
-              {
-                url: 'traitement.php',
-                type: 'POST',
-                data: {bouton: direction},
-              })
-              .done(function(valeurRetour) 
-              {
-                $("body").append(valeurRetour);
-              });
+            $.ajax(
+            {
+              url: 'traitement.php',
+              type: 'POST',
+              data: {bouton: direction},
+            })
+            .done(function(valeurRetour) 
+            {
+              $("body").append(valeurRetour);
+            });
           }, 100);          
         });
 
@@ -140,10 +141,10 @@
 
         $('.boutonFire').click(function(event) 
         {
-            /**var voix = new SpeechSynthesisUtterance();
+            var voix = new SpeechSynthesisUtterance();
             voix.lang = 'fr-FR';
             voix.text = "Veuillez rentrer votre mot de passe";
-            speechSynthesis.speak(voix);*/
+            speechSynthesis.speak(voix);
 
             if ($('.divBoutonFire2').is(":visible")) 
             {
@@ -159,12 +160,12 @@
 
         $('.boutonFire2').click(function(event) 
         {
-          $(document).unbind('keypress');
-          $(document).unbind('keyup');
-          /**var voix = new SpeechSynthesisUtterance();
+          var voix = new SpeechSynthesisUtterance();
           voix.lang = 'fr-FR';
           voix.text = "Mise à feu enclenchée.";
-          speechSynthesis.speak(voix);*/
+          speechSynthesis.speak(voix);
+          $(document).unbind('keypress');
+          $(document).unbind('keyup');
           $('.decompte').fadeIn('slow');
           counter($('.decompteNumerique'), 20);   
         });
@@ -176,6 +177,7 @@
 
         function counter($el, n) 
         {
+          var compteur = 0;
           (function loop() 
           {
             $(document).one('keypress', function(event) 
@@ -189,6 +191,15 @@
             $('#progressBarFire').css('width', pourcent2);
             if (n--) 
             {
+              if (compteur == 3) 
+              {
+                liresound("bip.wav");
+                compteur = 0;
+              }
+              else
+              {
+                compteur ++;
+              }
               setTimeout(loop, 250);
             }
             else
@@ -278,6 +289,12 @@
             }
           });
         }
+
+        function liresound (soundFile) 
+        { 
+         audio = new Audio(soundFile);
+         audio.play();
+        } 
 
         $('#confirmModal').click(function(event) 
         {
