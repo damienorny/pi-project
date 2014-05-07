@@ -129,11 +129,11 @@
 
         $('.boutonFire').click(function(event) 
         {
-            /* Décommenter pour activer la voix **/
+            /** Décommenter pour activer la voix **
             var voix = new SpeechSynthesisUtterance();
             voix.lang = 'fr-FR';
             voix.text = "Veuillez rentrer votre mot de passe";
-            speechSynthesis.speak(voix);
+            speechSynthesis.speak(voix);*/
 
             if ($('.divBoutonFire2').is(":visible")) 
             {
@@ -147,18 +147,20 @@
 
         $('.boutonFire2').click(function(event) 
         {
+          $('.divBoutonFire2').hide();
           $('#progressBarFire').css('width', "100%");
-          var voix = new SpeechSynthesisUtterance();
+          /**var voix = new SpeechSynthesisUtterance();
           voix.lang = 'fr-FR';
           voix.text = "Mise à feu enclenchée.";
-          speechSynthesis.speak(voix);
+          speechSynthesis.speak(voix);*/
           $('.decompte').fadeIn('slow');
           counter($('.decompteNumerique'), 20);   
         });
 
         $('#NewFire').click(function(event) 
         {
-          location.reload();
+          $('.decompte').fadeOut('slow');
+          $('#NewFire').hide();
         });
 
         function counter($el, n) 
