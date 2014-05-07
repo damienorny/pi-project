@@ -31,7 +31,6 @@
       }
     </style>
   </head>
-
   <body>
   <div class="decompte">
     <div class="decompteNumerique"></div>
@@ -130,11 +129,11 @@
 
         $('.boutonFire').click(function(event) 
         {
-            /** Décommenter pour activer la voix **
+            /* Décommenter pour activer la voix **/
             var voix = new SpeechSynthesisUtterance();
             voix.lang = 'fr-FR';
             voix.text = "Veuillez rentrer votre mot de passe";
-            speechSynthesis.speak(voix);*/
+            speechSynthesis.speak(voix);
 
             if ($('.divBoutonFire2').is(":visible")) 
             {
@@ -148,8 +147,43 @@
 
         $('.boutonFire2').click(function(event) 
         {
-            alert("boutonFire2");    
+          $('#progressBarFire').css('width', "100%");
+          var voix = new SpeechSynthesisUtterance();
+          voix.lang = 'fr-FR';
+          voix.text = "Mise à feu enclenchée.";
+          speechSynthesis.speak(voix);
+          $('.decompte').fadeIn('slow');
+          counter($('.decompteNumerique'), 20);   
         });
+
+        $('#NewFire').click(function(event) 
+        {
+          location.reload();
+        });
+
+        function counter($el, n) 
+        {
+          (function loop() 
+          {
+            $(document).one('keypress', function(event) {
+              $('#NewFire').trigger('click');
+              return;
+            });
+            $el.html(Math.ceil(n/4));
+            var pourcent = 5*n;
+            var pourcent2 = pourcent + "%";
+            $('#progressBarFire').css('width', pourcent2);
+            if (n--) 
+            {
+              setTimeout(loop, 250);
+            }
+            else
+            {
+              $('#NewFire').show();
+              return;
+            }
+          })();       
+        }
 
         $(document).keypress(function(event) 
         {
