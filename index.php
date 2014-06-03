@@ -12,8 +12,8 @@
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
       .decompte
@@ -32,23 +32,23 @@
     </style>
   </head>
   <body>
-  <div class="decompte">
-    <div class="decompteNumerique"></div>
-    <div class="progress progress-striped active">
-      <div class="progress-bar progress-bar-danger"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="progressBarFire">
+    <div class="decompte">
+      <div class="decompteNumerique"></div>
+      <div class="progress progress-striped active">
+        <div class="progress-bar progress-bar-danger"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="progressBarFire">
+        </div>
       </div>
+      <div class="col-md-4 col-xs-4 col-md-offset-4 col-xs-offset-4"><button name="Relancer" id="NewFire" style="display:none" class="buttonInd btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-refresh"> Relancer</span></button></div>
     </div>
-    <div class="col-md-4 col-xs-4 col-md-offset-4 col-xs-offset-4"><button name="Relancer" id="NewFire" style="display:none" class="buttonInd btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-refresh"> Relancer</span></button></div>
-  </div>
-  <!-- navbar -->
+    <!-- navbar -->
     <nav class="navbar navbar-default navbar-fixed-top alert navbarNotif" role="navigation" style="display:none">
       <div class="container">
         <span class="texteNotif"></span>
       </div>
     </nav>
-  <!-- navbar -->
+    <!-- navbar -->
 
-  <h1>Canon électromagnétique <small>Interface de contrôle</small></h1>
+    <h1>Canon électromagnétique <small>Interface de contrôle</small></h1>
     <div class="well">
       <div class="container">
         <div class="row">
@@ -88,20 +88,22 @@
         </div>
       </div>
     </div>
-    <!--
-    <embed src="bip.wav" autostart="false" width="0" height="0" id="sound1" enablejavascript="true">-->
     <!-- Fin modal bootstrap pour mot de passe -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery-1.11.0.min.js"></script>
-    <script src="js/jquery-ui-1.10.4.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
+      var one = 0;
+      var audio;
+
       $(document).ready(function() 
       {
-        rebindEvents();
+        rebindEventsKeyPress();
+        rebindEventsKeyDown();
+        rebindEventsKeyUp();
         var timeout, clicker = $('.buttonDirection');
         clicker.mousedown(function(event) 
         {
@@ -120,6 +122,17 @@
             });
           }, 100);          
         });
+
+        $('.decompte').click(function(event) 
+        {
+          $('#NewFire').trigger('click');
+        });
+
+        $(document).mouseup(function()
+        {
+            clearInterval(timeout);
+            return false;
+        });
           
         $('#modalPassword').on('shown.bs.modal', function (e) 
         {
@@ -128,21 +141,33 @@
 
         $('.boutonFire').click(function(event) 
         {
-          /*Décommenter pour activer la voix **/
+            var voix = new SpeechSynthesisUtterance();
+            voix.lang = 'fr-FR';
+            voix.text = "Veuillez rentrer votre mot de passe";
+            speechSynthesis.speak(voix);
+
+            if ($('.divBoutonFire2').is(":visible")) 
+            {
+              $('.divBoutonFire2').hide();
+              rebindEventsKeyDown();
+            }
+            else
+            {
+              $('#modalPassword').modal();
+              $(document).unbind('keydown');
+            }         
+        });
+
+        $('.boutonFire2').click(function(event) 
+        {
           var voix = new SpeechSynthesisUtterance();
           voix.lang = 'fr-FR';
-          voix.text = "Veuillez rentrer votre mot de passe";
+          voix.text = "Mise à feu enclenchée.";
           speechSynthesis.speak(voix);
-
-          if ($('.divBoutonFire2').is(":visible")) 
-          {
-            $('.divBoutonFire2').hide();
-          }
-          else
-          {
-            $('#modalPassword').modal();
-            $(document).unbind('keydown');
-          }         
+          $(document).unbind('keypress');
+          $(document).unbind('keyup');
+          $('.decompte').fadeIn('slow');
+          counter($('.decompteNumerique'), 20);   
         });
 
         $('#NewFire').click(function(event) 
@@ -152,12 +177,11 @@
 
         function counter($el, n) 
         {
+          var compteur = 0;
           (function loop() 
           {
-            $(document).unbind('keypress');
-            $(document).unbind('keydown');
-            $(document).unbind('keyup');
-            $(document).one('keypress', function(event) {
+            $(document).one('keypress', function(event) 
+            {
               $('#NewFire').trigger('click');
               return;
             });
@@ -167,6 +191,15 @@
             $('#progressBarFire').css('width', pourcent2);
             if (n--) 
             {
+              if (compteur == 3) 
+              {
+                liresound("bip.wav");
+                compteur = 0;
+              }
+              else
+              {
+                compteur ++;
+              }
               setTimeout(loop, 250);
             }
             else
@@ -177,24 +210,7 @@
           })();       
         }
 
-        $('.decompte').click(function(event) {
-          $('#NewFire').trigger('click');
-        });
-
-        $('.boutonFire2').click(function(event) 
-        {
-          $('#progressBarFire').css('width', "100%");
-          var voix = new SpeechSynthesisUtterance();
-          voix.lang = 'fr-FR';
-          voix.text = "Mise à feu enclenchée.";
-          speechSynthesis.speak(voix);
-          $('.decompte').fadeIn('slow');
-          counter($('.decompteNumerique'), 20);
-        });
-
-        var one = 0;
-
-        function rebindEvents()
+        function rebindEventsKeyPress()
         {
           $(document).keypress(function(event) 
           {
@@ -215,7 +231,10 @@
               $('.boutonFire').trigger('click');
             }
           });
+        }
 
+        function rebindEventsKeyDown()
+        {
           $(document).keydown(function(event) 
           {
             if (one == 0) 
@@ -242,7 +261,10 @@
               }
             }
           });
+        }
 
+        function rebindEventsKeyUp()
+        {
           $(document).keyup(function(event) 
           {
             if (event.which == 104 && one == 1) 
@@ -266,7 +288,13 @@
               one = 0;
             }
           });
-        }   
+        }
+
+        function liresound (soundFile) 
+        { 
+         audio = new Audio(soundFile);
+         audio.play();
+        } 
 
         $('#confirmModal').click(function(event) 
         {
@@ -283,6 +311,7 @@
               $(".navbarNotif").hide("slow");
               $(".navbarNotif").removeClass('alert-danger');
             }, 3000);
+            rebindEventsKeyDown();
             return;
           }
           $(".texteNotif").text("La mise à feu est désormais disponible");
@@ -293,7 +322,7 @@
             $(".navbarNotif").hide("slow");
             $(".navbarNotif").removeClass('alert-success');
           }, 3000);
-          $('.divBoutonFire2').show();
+          $('.divBoutonFire2').toggle();
         });
       });
     </script>
