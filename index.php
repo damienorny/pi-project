@@ -67,6 +67,13 @@
         <div style = "display: none" class = "divBoutonFire2">
           <br/><button class="btn btn-danger btn-lg btn-block boutonFire2"><span class="glyphicon glyphicon-fire"> Fire</button>
         </div>
+        <div class="row">
+          <br/>
+          <div class="col-md-3 col-xs-3"><button name="bleue" class="buttonColor btn btn-primary btn-lg btn-block">Bleue</button></div>
+          <div class="col-md-3 col-xs-3"><button name="vert" class="buttonColor btn btn-success btn-lg btn-block">Vert</button></div>
+          <div class="col-md-3 col-xs-3"><button name="jaune" class="buttonColor btn btn-warning btn-lg btn-block">Jaune</button></div>
+          <div class="col-md-3 col-xs-3"><button name="rouge" class="buttonColor btn btn-danger btn-lg btn-block">Rouge</button></div>
+        </div>
       </div>
     </div>
 
@@ -104,6 +111,7 @@
         rebindEventsKeyPress();
         rebindEventsKeyDown();
         rebindEventsKeyUp();
+        
         var timeout, clicker = $('.buttonDirection');
         clicker.mousedown(function(event) 
         {

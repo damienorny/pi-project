@@ -22,4 +22,24 @@
 			echo '<div class="row">
          	<div class="col-md-4 col-xs-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-right"></span></button></div>';
 	}
+	elseif($bouton == "bleue")
+	{
+			echo '<div class="row">
+         	<div class="col-md-4 col-xs-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-right"></span></button></div>';
+	}
+	elseif($bouton == "vert")
+	{
+			echo '<div class="row">
+         	<div class="col-md-4 col-xs-4"><button class="btn btn-success btn-lg btn-block"><span class="glyphicon glyphicon-arrow-right"></span></button></div>';
+	}
+	elseif($bouton == "jaune")
+	{
+			echo '<div class="row">
+         	<div class="col-md-4 col-xs-4"><button class="btn btn-warning btn-lg btn-block"><span class="glyphicon glyphicon-arrow-right"></span></button></div>';
+	}
+	elseif($bouton == "rouge")
+	{
+			echo '<div class="row">
+         	<div class="col-md-4 col-xs-4"><button class="btn btn-danger btn-lg btn-block"><span class="glyphicon glyphicon-arrow-right"></span></button></div>';
+	}
 ?>
