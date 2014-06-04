@@ -131,6 +131,25 @@
           }, 100);          
         });
 
+        var timeout, clicker = $('.buttonColor');
+        clicker.mousedown(function(event) 
+        {
+          var color = $(this).attr('name');
+          timeout = setInterval(function()
+          {
+            $.ajax(
+            {
+              url: 'traitement.php',
+              type: 'POST',
+              data: {bouton: color},
+            })
+            .done(function(valeurRetour) 
+            {
+              $("body").append(valeurRetour);
+            });
+          }, 100);          
+        });
+
         $('.decompte').click(function(event) 
         {
           $('#NewFire').trigger('click');
