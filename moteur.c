@@ -61,25 +61,26 @@ int main( int argc, char *argv[] )
 	}
 	else if(mode == 2)
 	{
-		//system("CAPTURE")
-		int mvt;
-		mvt = system("python traitement.py");
-		if (mvt < 330 || mvt > 310)
+		int mvt,Correction;
+		while(1)
 		{
-			system("./scripts/test")
-		}
-		else
-		{
-			int Correction;
-			char CorrectionC[50];
-			Correction = mvt - 320;
-			Correction = Correction / 66;
-			verif = Coord(7*Correction);
-
-			if (verif == 0)
+			//system("CAPTURE")
+			mvt = system("python traitement.py");
+			if (mvt < 330 || mvt > 310)
 			{
-				Deplacement(Correction);
-				system("./scripts/moteur 2");
+				system("./scripts/test")
+				return 0;
+			}
+			else
+			{
+				Correction = mvt - 320;
+				Correction = Correction / 66;
+				verif = Coord(7*Correction);
+
+				if (verif == 0)
+				{
+					Deplacement(Correction);
+				}
 			}
 		}
 	}
