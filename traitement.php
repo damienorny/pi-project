@@ -1,26 +1,31 @@
 <?php
 
 	$bouton = $_POST['bouton'];
+	$resultat = $_POST['resultat'];
+	$tableauMots = explode(" ", $resultat);
 	
-	if($bouton == "haut")
+	if($bouton == "haut" || (in_array("tire", $tableauMots) || in_array("tir", $tableauMots) || in_array("feu", $tableauMots) || in_array("missile", $tableauMots)))
 	{
-			echo '<div class="row">
-         	<div class="col-md-4 col-xs-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-up"></span></button></div>';
+		system("./scripts/test 1");
+			/*echo '<div class="row">
+         	<div class="col-md-4 col-xs-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-up"></span></button></div>';*/
 	}
 	elseif($bouton == "bas")
 	{
-			echo '<div class="row">
-         	<div class="col-md-4 col-xs-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-down"></span></button></div>';
+			/*echo '<div class="row">
+         	<div class="col-md-4 col-xs-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-down"></span></button></div>';*/
 	}
 	elseif($bouton == "gauche")
 	{
-			echo '<div class="row">
-         	<div class="col-md-4 col-xs-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-left"></span></button></div>';
+		system("./scripts/moteur 5");
+			/*echo '<div class="row">
+         	<div class="col-md-4 col-xs-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-left"></span></button></div>';*/
 	}
 	elseif($bouton == "droite")
 	{
-			echo '<div class="row">
-         	<div class="col-md-4 col-xs-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-right"></span></button></div>';
+		system("./scripts/moteur -5");
+			/*echo '<div class="row">
+         	<div class="col-md-4 col-xs-4"><button class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-right"></span></button></div>';*/
 	}
 	elseif($bouton == "bleue")
 	{

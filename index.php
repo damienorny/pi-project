@@ -52,6 +52,9 @@
     <div class="well">
       <div class="container">
         <div class="row">
+          <button class="btn btn-primary btn-lg btn-block boutonParole"><span class="glyphicon glyphicon-comment"></span> Cliquez puis parlez</button>
+        </div><br/>
+        <div class="row">
           <div class="col-md-4 col-xs-4 col-md-offset-4 col-xs-offset-4"><button name="haut" class="buttonDirection btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-arrow-up"></span></button></div>
         </div>
         <div class="row">
@@ -108,11 +111,80 @@
 
       $(document).ready(function() 
       {
+
+
+        var msg = new SpeechSynthesisUtterance();
+        msg.lang = 'fr-FR';
+        if (!('webkitSpeechRecognition' in window)) {
+          upgrade();
+        }
+        else
+        {
+          var recognition = new webkitSpeechRecognition();
+          recognition.continuous = false;
+          recognition.interimResults = false;
+          var resultat;
+
+          recognition.onstart = function() { 
+            //speechSynthesis.speak("Je vous écoute"); 
+          }
+
+
+          $('.boutonParole').click(function(event) {
+            final_transcript = '';
+            //recognition.lang = select_dialect.value;
+            recognition.start();
+          });
+          recognition.onresult = function(event) { 
+              resultat = "";
+              if (event.results.length > 0) {
+                resultat = event.results[0][0].transcript.toLowerCase();
+              }
+
+          }; 
+          recognition.onend = function() { 
+            console.log("Resultat : "+resultat);
+            $.ajax({
+              url: 'traitement.php',
+              type: 'POST',
+              data: {resultat: resultat},
+            })
+            .done(function(retour) {
+              var voix = new SpeechSynthesisUtterance();
+              voix.lang = 'fr-FR';
+              voix.text = retour;
+              speechSynthesis.speak(voix);
+              console.log("Retour : "+retour);
+            })
+            .fail(function() {
+              console.log("error");
+            })
+            .always(function() {
+              console.log("complete");
+            });
+            
+          }
+        }
+
         rebindEventsKeyPress();
         rebindEventsKeyDown();
-        rebindEventsKeyUp();
+        // rebindEventsKeyUp();
         
-        var timeout, clicker = $('.buttonDirection');
+        $('.buttonDirection').click(function(event) {
+        	var direction = $(this).attr('name');
+        	$.ajax(
+            {
+              url: 'traitement.php',
+              type: 'POST',
+              data: {bouton: direction},
+            })
+            .done(function(valeurRetour) 
+            {
+              $("body").append(valeurRetour);
+            });
+        });
+
+        /*var timeout, clicker = $('.buttonDirection');
         clicker.mousedown(function(event) 
         {
           var direction = $(this).attr('name');
@@ -129,9 +201,23 @@
               $("body").append(valeurRetour);
             });
           }, 100);          
-        });
+        });*/
 
-        var timeout, clicker = $('.buttonColor');
+		$('.buttonColor').click(function(event) {
+			var color = $(this).attr('name');
+			$.ajax(
+            {
+              url: 'traitement.php',
+              type: 'POST',
+              data: {bouton: color},
+            })
+            .done(function(valeurRetour) 
+            {
+              $("body").append(valeurRetour);
+            });
+		});
+
+        /*var timeout, clicker = $('.buttonColor');
         clicker.mousedown(function(event) 
         {
           var color = $(this).attr('name');
@@ -148,18 +234,18 @@
               $("body").append(valeurRetour);
             });
           }, 100);          
-        });
+        });*/
 
         $('.decompte').click(function(event) 
         {
           $('#NewFire').trigger('click');
         });
 
-        $(document).mouseup(function()
+        /*$(document).mouseup(function()
         {
             clearInterval(timeout);
             return false;
-        });
+        });*/
           
         $('#modalPassword').on('shown.bs.modal', function (e) 
         {
@@ -268,54 +354,54 @@
             {
               if (event.which == 104) 
               {
-                 $('[name="haut"]').trigger('mousedown');
+                 $('[name="haut"]').trigger('click');
                  one = 1;
               }
               else if (event.which == 100) 
               {
-                $('[name="gauche"]').trigger('mousedown');
+                $('[name="gauche"]').trigger('click');
                 one = 2;
               }
               else if (event.which == 102) 
               {
-                $('[name="droite"]').trigger('mousedown');
+                $('[name="droite"]').trigger('click');
                 one = 3;
               }
               else if (event.which == 98) 
               {
-                $('[name="bas"]').trigger('mousedown');
+                $('[name="bas"]').trigger('click');
                 one = 4;
               }
             }
           });
         }
 
-        function rebindEventsKeyUp()
+        /*function rebindEventsKeyUp()
         {
           $(document).keyup(function(event) 
           {
             if (event.which == 104 && one == 1) 
             {
-              $('[name="haut"]').trigger('mouseup');
+              $('[name="haut"]').trigger('click');
               one = 0;
             }
             else if (event.which == 100 && one == 2) 
             {
-              $('[name="gauche"]').trigger('mouseup');
+              $('[name="gauche"]').trigger('click');
               one = 0;
             }
             else if (event.which == 102 && one == 3) 
             {
-              $('[name="droite"]').trigger('mouseup');
+              $('[name="droite"]').trigger('click');
               one = 0;
             }
             else if (event.which == 98 && one == 4) 
             {
-              $('[name="bas"]').trigger('mouseup');
+              $('[name="bas"]').trigger('click');
               one = 0;
             }
           });
-        }
+        }*/
 
         function liresound (soundFile) 
         { 
