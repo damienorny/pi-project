@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include "pifacedigital.h"
 
 int Coord(int Chgt);
-int Deplacement(int Bouge);
-int Depart();
+void Deplacement(int Bouge);
+void Depart();
 
 int main( int argc, char *argv[] )
 {
@@ -33,11 +34,11 @@ int main( int argc, char *argv[] )
 		while(1)
 		{
 			//system("CAPTURE")
-			fscanf(Commande,"python traitement.py %s", argv[2]);
+			strcpy(Commande,"python traitement.py"+*argv[2]);
 			mvt = system(Commande);
 			if (mvt < 330 || mvt > 310)
 			{
-				system("./scripts/test")
+				system("./scripts/test");
 				Depart();
 				return 0;
 			}
@@ -88,7 +89,7 @@ int Coord(int Chgt)
     }
 }
 
-int Deplacement(int Bouge)
+void Deplacement(int Bouge)
 {
 	pifacedigital_write_reg(0x60, OUTPUT, hw_addr);
 	usleep(100000);
@@ -127,7 +128,7 @@ int Deplacement(int Bouge)
 	pifacedigital_write_reg(0xF0, OUTPUT, hw_addr);
 }
 
-int Depart()
+void Depart()
 {
 	FILE* fichier = NULL;
 	char chaine[5] = "";
@@ -158,6 +159,4 @@ int Depart()
 
     Deplct = Deplct / 7;
     Deplacement(Deplct);
-
-	return 0;
 }
