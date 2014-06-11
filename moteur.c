@@ -5,6 +5,7 @@
 
 int Coord(int Chgt);
 int Deplacement(int Bouge);
+int Depart();
 
 int main( int argc, char *argv[] )
 {
@@ -61,14 +62,17 @@ int main( int argc, char *argv[] )
 	}
 	else if(mode == 2)
 	{
+		char Commande[50];
 		int mvt,Correction;
 		while(1)
 		{
 			//system("CAPTURE")
-			mvt = system("python traitement.py");
+			fscanf(Commande,"python traitement.py %s", argv[2]);
+			mvt = system(Commande);
 			if (mvt < 330 || mvt > 310)
 			{
 				system("./scripts/test")
+				Depart();
 				return 0;
 			}
 			else
@@ -91,7 +95,7 @@ int Coord(int Chgt)
 {
 	FILE* fichier = NULL;
 	char chaine[5] = "";
-	float NCoord = 0; 
+	int NCoord = 0; 
 	fichier = fopen("Coordonnees.txt", "r+");
 
 	if (fichier == NULL)
@@ -155,4 +159,39 @@ int Deplacement(int Bouge)
 	}
 	
 	pifacedigital_write_reg(0xF0, OUTPUT, hw_addr);
+}
+
+int Depart()
+{
+	FILE* fichier = NULL;
+	char chaine[5] = "";
+	int NCoord = 0; 
+	int Deplct = 0;
+	fichier = fopen("Coordonnees.txt", "r+");
+
+	if (fichier == NULL)
+    {
+    	printf("Impossible d'ouvrir le fichier texte");
+    }
+
+    fgets(chaine, 3, fichier);
+    fclose(fichier);
+
+    NCoord = atoi(chaine);
+
+    while(NCoord < 90)
+    {
+    	NCoord++;
+    	Deplct++;
+    }
+    while(NCoord > 90)
+    {
+    	NCoord--;
+    	Deplct--;
+    }
+
+    Deplct = Deplct / 7;
+    Deplacement(Deplct);
+
+	return 0;
 }
